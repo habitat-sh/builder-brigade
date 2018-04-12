@@ -1,0 +1,30 @@
+{
+  "name": "builder-brigade",
+  "version": "0.0.1",
+  "description": "Polling service to watch for updates in Habitat Builder and instruct Kubernetes to update",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/habitat-sh/builder-brigade.git"
+  },
+  "keywords": [
+    "brigade",
+    "kubernetes",
+    "k8",
+    "habitat",
+    "builder"
+  ],
+  "author": "Elliott Davis <elliott@excellent.io>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/habitat-sh/builder-brigade/issues"
+  },
+  "homepage": "https://github.com/habitat-sh/builder-brigade#readme",
+  "dependencies": {
+    "kubernetes-client": "^5.2.0",
+    "util": "^0.10.3"
+  }
+}
