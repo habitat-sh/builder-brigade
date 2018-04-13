@@ -5,7 +5,7 @@ schedule: "*/3 * * * *"
 # Project name or project ID
 project: "habitat/builder-brigade"
 
-event: "cron"
+event: "pkg_check"
 
 # Which Git (VCS) "version" we are working with. Safe default is
 # just `ref: master`.
