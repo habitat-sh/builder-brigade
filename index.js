@@ -5,7 +5,7 @@ const request = require('request');
 const rp = require('request-promise-native');
 const client = new Client({ config: config.fromKubeconfig(), version: '1.9' });
 
-client.apis.v1.namespaces('default').pods.get({
+client.apis.v1.namespaces().pods.get({
     qs: {
         labelSelector: 'habitat=true'
     }
