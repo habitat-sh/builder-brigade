@@ -1,0 +1,27 @@
+# Schedule takes your standard cron syntax
+# schedule "*/3 * * * *" # Every 3 minutes
+schedule: "*/3 * * * *"
+
+# Project name or project ID
+project: "habitat/builder-brigade"
+
+event: "cron"
+
+# Which Git (VCS) "version" we are working with. Safe default is
+# just `ref: master`.
+ref: "refs/heads/master"
+
+# The data that is sent as the payload to your 'brigade.js' script. In our case
+# we actually don't need a payload other than the cron trigger so this can be
+# left blank
+payload: ""
+
+# If your cluster is rbac enabled then you want this to be `true`
+rbac:
+  enabled: false
+
+image:
+  registry: deis
+  name: brig
+  tag: latest
+
