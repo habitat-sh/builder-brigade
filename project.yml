@@ -4,7 +4,7 @@ cloneURL: "https://github.com/habitat-sh/builder-brigade.git"
 vcsSidecar: "deis/git-sidecar:latest"
 
 # Advanced. You probably won't need to alter these.
-allowPrivilegedJobs: "false"
+allowPrivilegedJobs: "true"
 github: {}
 secrets: {}
 kubernetes: {}

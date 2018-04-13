@@ -3,18 +3,47 @@ const config = require('kubernetes-client').config;
 const util = require('util');
 const request = require('request');
 const rp = require('request-promise-native');
-const client = new Client({ config: config.fromKubeconfig(), version: '1.9' });
+const client = new Client({ config: config.getInCluster(), version: '1.9' });
 
-client.apis.v1.namespaces().pods.get({
-    qs: {
-        labelSelector: 'habitat=true'
-    }
-}).then((res) => {
-    res.body.items.forEach((pod) => {
-        rp.get(`http://${pod.status.podIP}:9631/services`).then((data) => {
-            console.log(util.inspect(data, false, null))
-        }).catch((err) => {
-            console.log(`Unable to reach supervisor: ${err}`);
-        });
+async function main() {
+    let res = await client.apis.v1.namespaces().pods.get({
+        qs: {
+            labelSelector: 'habitat=true'
+        }
     });
-});
+
+    // Eww, basically a global state of running services
+    let services = {};
+
+    // fetch all the services we have running in our cluster
+    for (const pod of res.body.items) {
+        await fetch_sup_info(pod.status.podIP, services);
+    }
+    console.log(services);
+
+    // Look at builder to see if there are newer versions
+    Object.keys(services).forEach((svc) => {
+        // TED: Channel should be configurable, but this is demoware
+        rp.get(`https://bldr.habitat.sh/v1/channels/${services[svc].origin}/stable/pkgs/${services[svc].name}/latest`).then((resp) => {
+            console.log(util.inspect(resp, false, null));
+        })
+    });
+}
+
+async function fetch_sup_info(ip, services) {
+    try {
+        let data = await rp.get(`http://${ip}:9631/services`);
+        JSON.parse(data).reduce((prev, svc) => {
+            return prev[svc.pkg.ident] = {
+                origin: svc.pkg.origin,
+                name: svc.pkg.name,
+                version: svc.pkg.version,
+                release: svc.pkg.release
+            }
+        }, services);
+    } catch (err) {
+        console.log(`Unable to reach supervisor: ${err}`);
+    }
+}
+
+main();
