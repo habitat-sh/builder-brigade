@@ -7,8 +7,11 @@ In it's current state it is *ONLY FOR DEMO PURPOSES*. The pattern we use current
 Clone this repository and then:
 ```
 $ cd builder-brigade
+$ helm repo add brigade https://azure.github.io/brigade
+$ helm init
+$ helm install -n brigade brigade/brigade
 $ helm install -n builder-brigade brigade/brigade-project -f project.yml
-$ helm install -n brigade-cron ./charts/brigade-cron -f values.yml
+$ helm install -n brigade-cron ./charts/brigade-cron -f charts/values.yml
 ```
 If your cluster has RBAC enabled, append `--set rbac.enabled=true` to the end of the second install command, like so:
 ```
