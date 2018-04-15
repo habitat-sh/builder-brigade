@@ -27,7 +27,7 @@ async function main() {
         try {
             let resp = await rp.get({
                 url: `https://bldr.habitat.sh/v1/depot/channels/${services[svc].origin}/stable/pkgs/${services[svc].name}/latest`,
-                headers: { 'Accept': '*/*' }
+                headers: { 'User-Agent': 'your-mom' }
             });
             if (parseInt(resp.ident.release) > parseInt(services[svc].release)) {
                 console.log("newer version available")
