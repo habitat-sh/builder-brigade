@@ -22,12 +22,15 @@ async function main() {
     console.log(services);
 
     // Look at builder to see if there are newer versions
-    Object.keys(services).forEach((svc) => {
+    for (const svc of Object.keys(services)) {
         // TED: Channel should be configurable, but this is demoware
-        rp.get(`https://bldr.habitat.sh/v1/channels/${services[svc].origin}/stable/pkgs/${services[svc].name}/latest`).then((resp) => {
+        try {
+            let resp = await rp.get(`https://bldr.habitat.sh/v1/channels/${services[svc].origin}/stable/pkgs/${services[svc].name}/latest`);
             console.log(util.inspect(resp, false, null));
-        })
-    });
+        } catch (err) {
+            console.log(err);
+        }
+    };
 }
 
 async function fetch_sup_info(ip, services) {

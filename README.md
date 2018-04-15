@@ -17,3 +17,9 @@ If your cluster has RBAC enabled, append `--set rbac.enabled=true` to the end of
 ```
 $ helm install -n builder-brigade -f values.yml --set rbac.enabled=true
 ```
+
+## Testing changes
+
+```
+$ brig run -f brigade.js -e pkg_check --verbose habitat/builder-brigade
+```
