@@ -29,8 +29,8 @@ async function main() {
                 url: `https://bldr.habitat.sh/v1/depot/channels/${services[svc].origin}/stable/pkgs/${services[svc].name}/latest`,
                 headers: { 'User-Agent': 'your-mom' }
             });
-            console.log(resp);
-            if (parseInt(resp.body.ident.release) > parseInt(services[svc].release)) {
+            console.log(resp.ident);
+            if (parseInt(resp.ident.release) > parseInt(services[svc].release)) {
                 console.log("newer version available")
             } else {
                 console.log("latest version installed")
