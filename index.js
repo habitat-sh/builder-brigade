@@ -25,8 +25,12 @@ async function main() {
     for (const svc of Object.keys(services)) {
         // TED: Channel should be configurable, but this is demoware
         try {
-            let resp = await rp.get(`https://bldr.habitat.sh/v1/channels/${services[svc].origin}/stable/pkgs/${services[svc].name}/latest`);
-            console.log(util.inspect(resp, false, null));
+            let resp = await rp.get(`https://bldr.habitat.sh/v1/depot/channels/${services[svc].origin}/stable/pkgs/${services[svc].name}/latest`);
+            if (parseInt(resp.ident.release) > parseInt(services[svc].release)) {
+                console.log("newer version available")
+            } else {
+                console.log("latest version installed")
+            }
         } catch (err) {
             console.log(err);
         }
