@@ -31,9 +31,9 @@ async function main() {
             });
             let resp2 = JSON.parse(resp);
             if (parseInt(resp2.ident.release) > parseInt(services[svc].release)) {
-                console.log("newer version available")
+                console.log(`Newer version of ${services[svc].name} available`)
             } else {
-                console.log("latest version installed")
+                console.log(`latest version of ${services[svc].name} installed`)
             }
         } catch (err) {
             console.log(err);
