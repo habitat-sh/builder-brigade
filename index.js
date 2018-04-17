@@ -29,8 +29,9 @@ async function main() {
                 headers: { 'User-Agent': 'your-mom' }
             });
             let resp2 = JSON.parse(resp);
-            // TED flip the comparator back
-            if (parseInt(resp2.ident.release) < parseInt(services[svc].release)) {
+            // TED flip the comparator back and remove the equals
+
+            if (parseInt(resp2.ident.release) <= parseInt(services[svc].release)) {
                 console.log(`Newer version of ${services[svc].name} available`);
                 update_deployment_image(services[svc].deployment, resp2.ident);
                 console.log("Upgraded to latest version");
