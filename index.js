@@ -33,7 +33,7 @@ async function main() {
 
             if (parseInt(resp2.ident.release) <= parseInt(services[svc].release)) {
                 console.log(`Newer version of ${services[svc].name} available`);
-                update_deployment_image(services[svc].deployment, resp2.ident);
+                await update_deployment_image(services[svc].deployment, resp2.ident);
                 console.log("Upgraded to latest version");
             } else {
                 console.log(`Latest version of ${services[svc].name} installed`)
