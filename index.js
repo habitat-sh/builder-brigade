@@ -64,10 +64,8 @@ async function fetch_sup_info(ip, deployment, services) {
 async function update_deployment_image(deployment, new_metadata) {
     try {
         const payload = [{ op: "replace", path: "/spec/template/spec/containers/0/image", value: "habitat/nginx" }];
-        const create = await client.apis.apps.v1.namespaces('default').statefulsets(deployment).put(payload);
+        const create = await client.apis.apps.v1.namespaces('default').statefulsets(deployment).patch(payload);
     } catch (err) {
         console.log(err);
     }
 }
-
-main();
