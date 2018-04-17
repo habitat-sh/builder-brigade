@@ -12,8 +12,6 @@ async function main() {
         }
     });
 
-    // console.log(util.inspect(res, false, null));
-
     // Eww, basically a global state of running services
     let services = {};
 
@@ -45,6 +43,7 @@ async function main() {
 }
 
 async function fetch_sup_info(ip, services) {
+    console.log(util.inspect(services, false, null));
     try {
         let data = await rp.get(`http://${ip}:9631/services`);
         JSON.parse(data).reduce((prev, svc) => {
