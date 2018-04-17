@@ -21,6 +21,7 @@ async function main() {
         await fetch_sup_info(pod.status.podIP, pod.metadata.labels['habitat-name'], services);
     }
     // Look at builder to see if there are newer versions
+    console.log(services);
     for (const svc of Object.keys(services)) {
         // TED: Channel should be configurable, but this is demoware
         try {
