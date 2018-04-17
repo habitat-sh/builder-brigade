@@ -17,7 +17,8 @@ async function main() {
 
     // fetch all the services we have running in our cluster
     for (const pod of res.body.items) {
-        await fetch_sup_info(pod.status.podIP, services);
+        // Definitely leaking implementation here
+        await fetch_sup_info(pod.status.podIP, pod.metadata.labels['habitat-name'], services);
     }
     // Look at builder to see if there are newer versions
     for (const svc of Object.keys(services)) {
@@ -42,8 +43,7 @@ async function main() {
     };
 }
 
-async function fetch_sup_info(ip, services) {
-    console.log(util.inspect(services, false, null));
+async function fetch_sup_info(ip, deployment, services) {
     try {
         let data = await rp.get(`http://${ip}:9631/services`);
         JSON.parse(data).reduce((prev, svc) => {
@@ -52,7 +52,7 @@ async function fetch_sup_info(ip, services) {
                 name: svc.pkg.name,
                 version: svc.pkg.version,
                 release: svc.pkg.release,
-                deployment: svc.metadata.labels['habitat-name']
+                deployment
             }
         }, services);
     } catch (err) {
