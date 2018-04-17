@@ -12,6 +12,8 @@ async function main() {
         }
     });
 
+    console.log(util.inspect(res, false, null));
+
     // Eww, basically a global state of running services
     let services = {};
 
@@ -19,8 +21,6 @@ async function main() {
     for (const pod of res.body.items) {
         await fetch_sup_info(pod.status.podIP, services);
     }
-    console.log(services);
-
     // Look at builder to see if there are newer versions
     for (const svc of Object.keys(services)) {
         // TED: Channel should be configurable, but this is demoware
@@ -33,7 +33,7 @@ async function main() {
             if (parseInt(resp2.ident.release) > parseInt(services[svc].release)) {
                 console.log(`Newer version of ${services[svc].name} available`)
             } else {
-                console.log(`latest version of ${services[svc].name} installed`)
+                console.log(`Latest version of ${services[svc].name} installed`)
             }
         } catch (err) {
             console.log(err);
@@ -55,6 +55,11 @@ async function fetch_sup_info(ip, services) {
     } catch (err) {
         console.log(`Unable to reach supervisor: ${err}`);
     }
+}
+
+async function update_deployment_image() {
+    const payload = { spec: { template: { spec: { containers: [{ "name": "nginx", "image": "nginx:1.11" }] } } } };
+    const create = await client.apis.apps.v1.namespaces('default').deployments().patch(payload);
 }
 
 main();
