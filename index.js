@@ -12,7 +12,7 @@ async function main() {
         }
     });
 
-    console.log(util.inspect(res, false, null));
+    // console.log(util.inspect(res, false, null));
 
     // Eww, basically a global state of running services
     let services = {};
@@ -30,8 +30,11 @@ async function main() {
                 headers: { 'User-Agent': 'your-mom' }
             });
             let resp2 = JSON.parse(resp);
-            if (parseInt(resp2.ident.release) > parseInt(services[svc].release)) {
-                console.log(`Newer version of ${services[svc].name} available`)
+            // TED flip the comparator back
+            if (parseInt(resp2.ident.release) < parseInt(services[svc].release)) {
+                console.log(`Newer version of ${services[svc].name} available`);
+                update_deployment_image(services[svc].deployment, resp2.ident);
+                console.log("Upgraded to latest version");
             } else {
                 console.log(`Latest version of ${services[svc].name} installed`)
             }
@@ -49,7 +52,8 @@ async function fetch_sup_info(ip, services) {
                 origin: svc.pkg.origin,
                 name: svc.pkg.name,
                 version: svc.pkg.version,
-                release: svc.pkg.release
+                release: svc.pkg.release,
+                deployment: svc.metadata.labels['habitat-name']
             }
         }, services);
     } catch (err) {
@@ -57,7 +61,7 @@ async function fetch_sup_info(ip, services) {
     }
 }
 
-async function update_deployment_image() {
+async function update_deployment_image(deployment, new_metadata) {
     const payload = { spec: { template: { spec: { containers: [{ "name": "nginx", "image": "nginx:1.11" }] } } } };
     const create = await client.apis.apps.v1.namespaces('default').deployments().patch(payload);
 }
