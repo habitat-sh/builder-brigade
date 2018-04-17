@@ -71,3 +71,5 @@ async function update_deployment_image(deployment, new_metadata) {
         console.log(err);
     }
 }
+
+main();
