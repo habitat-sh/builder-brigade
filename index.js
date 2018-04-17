@@ -66,7 +66,7 @@ async function update_deployment_image(deployment, new_metadata) {
     try {
         const payload = { op: "replace", path: "/spec/template/spec/containers/0/image", value: "habitat/nginx" };
         const resp = await client.apis.apps.v1.namespaces('default').statefulsets(deployment).patch({ body: payload });
-        console.log(resp);
+        console.log(util.inspect(resp, false, null));
     } catch (err) {
         console.log(err);
     }
