@@ -1,3 +1,8 @@
+# Archived Repository
+This repository has been archived and will no longer receive updates. 
+It was archived as part of the [Repository Standardization Initiative](https://github.com/chef-boneyard/oss-repo-standardization-2025).
+If you are a Chef customer and need support for this repository, please contact your Chef account team.
+
 # Builder Brigade: A service for syncing package update with kubernetes managed habitat services
 This is the repo for a brigade service that syncs package updates between builder and kubernetes.
 
